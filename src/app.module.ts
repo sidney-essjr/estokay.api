@@ -5,11 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Voluntario } from './modules/voluntario/entity/voluntario.entity';
 import { ConfigModule } from '@nestjs/config';
 import { VoluntarioModule } from './modules/voluntario/voluntario.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     VoluntarioModule,
+    AuthModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,

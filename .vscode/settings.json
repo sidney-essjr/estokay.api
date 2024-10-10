@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    ".vscode": true,
+    ".eslintrc.js": true,
+    ".gitignore": true,
+    ".prettierrc": true,
+    "nest-cli.json": true,
+    "README.md": true,
+    "node_modules": true,
+    "dist": true,
+  }
+}

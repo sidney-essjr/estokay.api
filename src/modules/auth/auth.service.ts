@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
+  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
 import { Repository } from 'typeorm';
 import { Voluntario } from '../voluntario/entity/voluntario.entity';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -23,20 +25,18 @@ export class AuthService {
   ) {}
 
   criarToken(voluntario: Voluntario) {
-    return {
-      accessToken: this.jwtService.sign(
-        {
-          id: voluntario.id,
-          nome: voluntario.nome,
-          email: voluntario.email,
-        },
-        {
-          expiresIn: '3 days',
-          issuer: this.issuer,
-          audience: this.audience,
-        },
-      ),
-    };
+    return this.jwtService.sign(
+      {
+        id: voluntario.id,
+        nome: voluntario.nome,
+        email: voluntario.email,
+      },
+      {
+        expiresIn: '1d',
+        issuer: this.issuer,
+        audience: this.audience,
+      },
+    );
   }
 
   validarToken(token: string) {
@@ -60,7 +60,7 @@ export class AuthService {
     }
   }
 
-  async login(email: string, senha: string) {
+  async login(email: string, senha: string, res: Response) {
     const voluntario = await this.voluntarioRepository.findOneBy({ email });
 
     if (!voluntario || !voluntario.ativo)
@@ -71,7 +71,12 @@ export class AuthService {
     if (!permitido)
       throw new UnauthorizedException('Dados de acesso inválidos');
 
-    return this.criarToken(voluntario);
+    const token = this.criarToken(voluntario);
+
+    // cria um cookie com o token para gerenciamento de sessão
+    this.criarCookie(res, token);
+
+    return res.status(HttpStatus.OK).json();
   }
 
   async esqueceuSenha(email: string) {
@@ -82,4 +87,13 @@ export class AuthService {
   }
 
   async resetarSenha(token: string) {}
+
+  criarCookie(res: Response, token: string) {
+    res.cookie('accessToken', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+  }
 }

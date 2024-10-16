@@ -9,6 +9,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 
 @Module({
   imports: [
@@ -32,6 +34,26 @@ import * as cookieParser from 'cookie-parser';
           limit: 20, // 20 chamadas
         },
       ],
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtpout.secureserver.net',
+        port: 465,
+        auth: {
+          user: String(process.env.EMAIL_USER),
+          pass: String(process.env.EMAIL_SECRET),
+        },
+      },
+      defaults: {
+        from: '"EstOkay"',
+      },
+      template: {
+        dir: __dirname + '/templates',
+        adapter: new PugAdapter(),
+        options: {
+          strict: true,
+        },
+      },
     }),
   ],
   controllers: [AppController],

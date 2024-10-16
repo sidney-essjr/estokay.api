@@ -80,7 +80,10 @@ export class AuthService {
   }
 
   async esqueceuSenha(email: string) {
-    if (!this.voluntarioRepository.exists({ where: { email } }))
+    const voluntario = await this.voluntarioRepository.exists({
+      where: { email },
+    });
+    if (!voluntario)
       throw new NotFoundException('Este e-mail não foi reconhecido');
 
     //enviar e-mail.

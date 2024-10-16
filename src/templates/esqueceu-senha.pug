@@ -1,17 +1,22 @@
-
-<div style="width: 600px; margin: 0 auto; padding: 20px 60px"> 
-
-p <strong>#{nome}</strong>, esqueceu sua senha? <br>
-
-p Acesse o link a seguir para proceguir com a redefinição da senha <br>
-
-<a style="background: #fb3b2e; color: #FFF; padding: 4px 10px; border-radius: 16px; text-align: center;" href={#{link}}> Redefinir senha </a> <br>
-
-p Importante: o link é válido por 30 minutos.
-
-p Caso desconheça essa solicitação apenas desconsidere a mensagem! <br>
-
-p Se precisar de ajuda, conte com a gente!
-p Equipe Est<span style="color: #fb3b2e">Okay</span>.
-
-</div>
+div(style="width: 600px; margin: 0 auto; padding: 20px 60px; font-size: 18px") 
+  p
+    | <strong>#{nome}</strong>, esqueceu sua senha?
+    br
+  p
+    | Acesse o link a seguir para proceder com a redefinição da senha
+    br
+  a(
+    style="background: #fb3b2e; color: #FFF; padding: 8px 16px; border-radius: 16px;"
+    href=link
+  ) Redefinir senha
+  br
+  p
+    | <strong>Importante:</strong> o link é válido por 30 minutos.
+  p
+    | Caso desconheça essa solicitação apenas desconsidere a mensagem!
+    br
+  p
+    | Se precisar de ajuda, conte com a gente!
+  p(style="font-weight: 600")
+    | Equipe Est
+    span(style="color: #fb3b2e") Okay.

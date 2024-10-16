@@ -41,24 +41,15 @@ export class AuthService {
     );
   }
 
-  validarToken(token: string) {
+  validarToken(token: string, issuer: string, audience: string) {
     try {
       const data = this.jwtService.verify(token, {
-        issuer: this.issuer,
-        audience: this.audience,
+        issuer: issuer,
+        audience: audience,
       });
       return data;
     } catch (error) {
-      throw new BadRequestException(error);
-    }
-  }
-
-  tokenValido(token: string) {
-    try {
-      this.validarToken(token);
-      return true;
-    } catch (_error) {
-      return false;
+      throw new BadRequestException('Falha na validação do token');
     }
   }
 
@@ -77,7 +68,6 @@ export class AuthService {
 
     // cria um cookie com o token para gerenciamento de sessão
     this.criarCookie(res, token);
-
     return res.status(HttpStatus.OK).json();
   }
 
@@ -107,7 +97,7 @@ export class AuthService {
         template: 'esqueceu-senha',
         context: {
           nome: voluntario.nome,
-          token: `https://localhost:5173/auth/redefinir-senha?token=${token}`,
+          link: `https://localhost:5173/auth/redefinir-senha?token=${token}`, //rota do frontend para redefinição de senha
         },
       });
     } catch (error) {
@@ -118,7 +108,17 @@ export class AuthService {
     }
   }
 
-  async redefinirSenha(token: string) {}
+  async redefinirSenha(token: string, novaSenha: string, res: Response) {
+    const data = this.validarToken(token, 'esqueceu-senha', 'voluntario');
+
+    novaSenha = await bcrypt.hash(novaSenha, bcrypt.genSaltSync());
+
+    if (data) {
+      this.voluntarioRepository.update(data.id, { senha: novaSenha });
+    }
+
+    return res.status(HttpStatus.OK).json();
+  }
 
   criarCookie(res: Response, token: string) {
     res.cookie('accessToken', token, {

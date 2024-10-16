@@ -10,8 +10,7 @@ export class AuthController {
 
   @Post('login')
   login(@Body() { email, senha }: LoginDTO, @Res() res: Response) {
-    this.authService.login(email, senha, res);
-    return res.status(HttpStatus.OK).json();
+    return this.authService.login(email, senha, res);
   }
 
   @Post('esqueceu-senha')
@@ -21,5 +20,10 @@ export class AuthController {
   }
 
   @Post('redefinir-senha')
-  redefinirSenha() {}
+  redefinirSenha(
+    @Body() body: { token: string; novaSenha: string },
+    @Res() res: Response,
+  ) {
+    return this.authService.redefinirSenha(body.token, body.novaSenha, res);
+  }
 }

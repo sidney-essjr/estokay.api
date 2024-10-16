@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException('Acesso não autorizado');
 
     try {
-      const data = this.authService.validarToken(token);
+      const data = this.authService.validarToken(token, 'login', 'voluntario');
 
       const voluntario = await this.voluntarioService.ler(data.id);
 

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { MailerService } from '@nestjs-modules/mailer';
 import {
   BadRequestException,
   HttpStatus,
@@ -22,6 +23,7 @@ export class AuthService {
     @InjectRepository(Voluntario)
     private readonly voluntarioRepository: Repository<Voluntario>,
     private readonly jwtService: JwtService,
+    private readonly mailer: MailerService,
   ) {}
 
   criarToken(voluntario: Voluntario) {
@@ -80,16 +82,43 @@ export class AuthService {
   }
 
   async esqueceuSenha(email: string) {
-    const voluntario = await this.voluntarioRepository.exists({
-      where: { email },
-    });
+    const voluntario = await this.voluntarioRepository.findOneBy({ email });
+
     if (!voluntario)
       throw new NotFoundException('Este e-mail não foi reconhecido');
 
-    //enviar e-mail.
+    const token = this.jwtService.sign(
+      {
+        id: voluntario.id,
+        nome: voluntario.nome,
+        email: voluntario.email,
+      },
+      {
+        expiresIn: '30 minutes',
+        issuer: 'esqueceu-senha',
+        audience: 'voluntario',
+      },
+    );
+
+    try {
+      await this.mailer.sendMail({
+        subject: 'EstOkay - Esqueceu sua senha?',
+        to: `${email}`,
+        template: 'esqueceu-senha',
+        context: {
+          nome: voluntario.nome,
+          token: `https://localhost:5173/auth/redefinir-senha?token=${token}`,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException(
+        'Problemas com o serviço de envio de e-mail!',
+        error,
+      );
+    }
   }
 
-  async resetarSenha(token: string) {}
+  async redefinirSenha(token: string) {}
 
   criarCookie(res: Response, token: string) {
     res.cookie('accessToken', token, {

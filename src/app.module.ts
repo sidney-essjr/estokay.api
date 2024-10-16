@@ -39,13 +39,14 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
       transport: {
         host: 'smtpout.secureserver.net',
         port: 465,
+        secure: true,
         auth: {
           user: String(process.env.EMAIL_USER),
           pass: String(process.env.EMAIL_SECRET),
         },
       },
       defaults: {
-        from: '"EstOkay"',
+        from: '"EstOkay" <sidney@sessjr.com>',
       },
       template: {
         dir: __dirname + '/templates',

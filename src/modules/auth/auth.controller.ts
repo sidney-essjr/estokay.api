@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { EsqueceuSenhaDTO } from './dto/esqueceu-senha.dto';
@@ -10,14 +10,16 @@ export class AuthController {
 
   @Post('login')
   login(@Body() { email, senha }: LoginDTO, @Res() res: Response) {
-    return this.authService.login(email, senha, res);
+    this.authService.login(email, senha, res);
+    return res.status(HttpStatus.OK).json();
   }
 
   @Post('esqueceu-senha')
-  esqueceuSenha(@Body() { email }: EsqueceuSenhaDTO) {
-    return this.authService.esqueceuSenha(email);
+  esqueceuSenha(@Body() { email }: EsqueceuSenhaDTO, @Res() res: Response) {
+    this.authService.esqueceuSenha(email);
+    return res.status(HttpStatus.OK).json();
   }
 
-  @Post('resetar-senha')
-  resetarSenha() {}
+  @Post('redefinir-senha')
+  redefinirSenha() {}
 }

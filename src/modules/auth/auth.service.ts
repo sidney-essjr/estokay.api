@@ -10,9 +10,11 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import { Repository } from 'typeorm';
 import { Voluntario } from '../voluntario/entity/voluntario.entity';
+import { SessionDataDTO } from './dto/session-data.dto';
 
 @Injectable()
 export class AuthService {
@@ -49,7 +51,7 @@ export class AuthService {
       });
       return data;
     } catch (error) {
-      throw new BadRequestException('Falha na validação do token');
+      throw new BadRequestException('Token inválido.');
     }
   }
 
@@ -57,12 +59,12 @@ export class AuthService {
     const voluntario = await this.voluntarioRepository.findOneBy({ email });
 
     if (!voluntario || !voluntario.ativo)
-      throw new UnauthorizedException('Dados de acesso inválidos');
+      throw new UnauthorizedException('Dados de acesso inválidos.');
 
     const permitido = await bcrypt.compare(senha, voluntario.senha);
 
     if (!permitido)
-      throw new UnauthorizedException('Dados de acesso inválidos');
+      throw new UnauthorizedException('Dados de acesso inválidos.');
 
     const token = this.criarToken(voluntario);
 
@@ -75,7 +77,7 @@ export class AuthService {
     const voluntario = await this.voluntarioRepository.findOneBy({ email });
 
     if (!voluntario)
-      throw new NotFoundException('Este e-mail não foi reconhecido');
+      throw new NotFoundException('Este e-mail não foi reconhecido.');
 
     const token = this.jwtService.sign(
       {
@@ -97,12 +99,12 @@ export class AuthService {
         template: 'esqueceu-senha',
         context: {
           nome: voluntario.nome,
-          link: `https://localhost:5173/auth/redefinir-senha?token=${token}`, //rota do frontend para redefinição de senha
+          link: `https://localhost:5173/access/redefinir-senha?token=${token}`, //rota do frontend para redefinição de senha
         },
       });
     } catch (error) {
       throw new BadRequestException(
-        'Problemas com o serviço de envio de e-mail!',
+        'Problemas com o serviço de envio de e-mail.',
         error,
       );
     }
@@ -120,9 +122,27 @@ export class AuthService {
     return res.status(HttpStatus.OK).json();
   }
 
+  async sessionLogin(req: any) {
+    const id = Number(req.voluntario.id) ?? 0;
+
+    try {
+      const voluntario = await this.voluntarioRepository.findOneByOrFail({
+        id,
+      });
+
+      return plainToInstance(SessionDataDTO, voluntario, {
+        excludeExtraneousValues: true,
+      });
+    } catch (error) {
+      if (error instanceof Error) throw new NotFoundException(error.message);
+
+      throw new NotFoundException('Dados não localizados.');
+    }
+  }
+
   criarCookie(res: Response, token: string) {
     res.cookie('accessToken', token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24,

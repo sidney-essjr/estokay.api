@@ -1,5 +1,14 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 import { AuthService } from './auth.service';
 import { EsqueceuSenhaDTO } from './dto/esqueceu-senha.dto';
 import { LoginDTO } from './dto/login.dto';
@@ -25,5 +34,11 @@ export class AuthController {
     @Res() res: Response,
   ) {
     return this.authService.redefinirSenha(body.token, body.novaSenha, res);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('session-login')
+  sessionLogin(@Req() req) {
+    return this.authService.sessionLogin(req);
   }
 }

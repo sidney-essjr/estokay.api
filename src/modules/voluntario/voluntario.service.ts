@@ -31,9 +31,9 @@ export class VoluntarioService {
   }
 
   async ler(id: number) {
-    const voluntary = await this.voluntarioRepository.findOneBy({ id });
+    const voluntario = await this.voluntarioRepository.findOneBy({ id });
 
-    return plainToInstance(LerVoluntarioDTO, voluntary, {
+    return plainToInstance(LerVoluntarioDTO, voluntario, {
       excludeExtraneousValues: true,
     });
   }

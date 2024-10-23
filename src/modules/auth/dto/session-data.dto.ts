@@ -1,5 +1,4 @@
 import { Expose } from 'class-transformer';
-import { FuncaoEnum } from 'src/common/enums/funcao.enum';
 
 export class SessionDataDTO {
   @Expose()
@@ -21,5 +20,5 @@ export class SessionDataDTO {
   ativo: boolean;
 
   @Expose()
-  funcao: FuncaoEnum;
+  funcao: string;
 }

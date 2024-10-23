@@ -1,22 +1,29 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Voluntario } from './modules/voluntario/entity/voluntario.entity';
-import { ConfigModule } from '@nestjs/config';
-import { VoluntarioModule } from './modules/voluntario/voluntario.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
-import * as cookieParser from 'cookie-parser';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as cookieParser from 'cookie-parser';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { Doacao } from './modules/doacao/entity/doacao.entity';
+import { ItemDoacao } from './modules/doacao/entity/item-doacao.entity';
+import { Doador } from './modules/doador/entity/doador.entity';
+import { Voluntario } from './modules/voluntario/entity/voluntario.entity';
+import { VoluntarioModule } from './modules/voluntario/voluntario.module';
+import { DoacaoModule } from './modules/doacao/doacao.module';
+import { DoadorModule } from './modules/doador/doador.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     VoluntarioModule,
     AuthModule,
+    DoacaoModule,
+    DoadorModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -24,7 +31,7 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
       username: process.env.DB_USERNAME,
       password: process.env.DB_SECRET,
       database: process.env.DB_NAME,
-      entities: [Voluntario],
+      entities: [Voluntario, Doacao, ItemDoacao, Doador],
       synchronize: process.env.ENV === 'development',
     }),
     ThrottlerModule.forRoot({

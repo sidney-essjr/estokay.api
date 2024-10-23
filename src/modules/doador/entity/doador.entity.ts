@@ -12,6 +12,9 @@ export class Doador {
   @Column({ nullable: true })
   telefone: string;
 
+  @Column({ nullable: true, length: 8 })
+  codigoPostal: string;
+
   @Column({ nullable: true, length: 127 })
   endereco: string;
 
@@ -24,8 +27,6 @@ export class Doador {
   @Column({ length: 63 })
   estado: string;
 
-  @OneToMany(() => Doacao, (doacoes) => doacoes.doador, {
-    onDelete: 'CASCADE', // remove os itens ao deletar a doação
-  })
+  @OneToMany(() => Doacao, (doacoes) => doacoes.doador)
   doacoes: Doacao[];
 }

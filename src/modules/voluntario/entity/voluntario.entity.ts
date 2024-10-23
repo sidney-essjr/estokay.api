@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,6 +16,7 @@ export class Voluntario {
   nome: string;
 
   @Column({ length: 127, unique: true })
+  @Index()
   email: string;
 
   @Column({ nullable: true })

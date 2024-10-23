@@ -21,9 +21,9 @@ export class VoluntarioService {
     const hash = await bcrypt.hash(data.senha, bcrypt.genSaltSync());
     data.senha = hash;
 
-    const entity = this.voluntarioRepository.create(data);
+    const novoVoluntario = this.voluntarioRepository.create(data);
 
-    const voluntario = await this.voluntarioRepository.save(entity);
+    const voluntario = await this.voluntarioRepository.save(novoVoluntario);
 
     return plainToInstance(LerVoluntarioDTO, voluntario, {
       excludeExtraneousValues: true,

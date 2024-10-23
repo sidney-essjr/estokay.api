@@ -17,6 +17,6 @@ export class DoacaoService {
       doador: { id: data.doador },
     };
     const novaDoacao = this.doacaoRepository.create(doacaoData);
-    return this.doacaoRepository.save(novaDoacao);
+    return await this.doacaoRepository.save(novaDoacao);
   }
 }

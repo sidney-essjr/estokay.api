@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CriarVoluntarioDTO } from './dto/criar-voluntario.dto';
 import { Voluntario } from './entity/voluntario.entity';
 import { plainToInstance } from 'class-transformer';
-import { LerVoluntarioDTO } from './dto/ler_voluntario.dto';
+import { LerVoluntarioDTO } from './dto/ler-voluntario.dto';
 import { AtualizarVoluntarioDTO } from './dto/atualizar-voluntario.dto';
 import { AtualizarVoluntarioAdmDTO } from './dto/atualizar-voluntario.adm.dto';
 import { AtualizarSenhaDTO } from './dto/atualizar-senha.dto';

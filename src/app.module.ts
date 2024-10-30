@@ -9,13 +9,18 @@ import * as cookieParser from 'cookie-parser';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
+import { DistribuicaoModule } from './modules/distribuicao/distribuicao.module';
+import { Distribuicao } from './modules/distribuicao/entity/distribuicao.entity';
+import { ItemDistribuicao } from './modules/distribuicao/entity/item-distribuicao.entity';
+import { DoacaoModule } from './modules/doacao/doacao.module';
 import { Doacao } from './modules/doacao/entity/doacao.entity';
 import { ItemDoacao } from './modules/doacao/entity/item-doacao.entity';
+import { DoadorModule } from './modules/doador/doador.module';
 import { Doador } from './modules/doador/entity/doador.entity';
 import { Voluntario } from './modules/voluntario/entity/voluntario.entity';
 import { VoluntarioModule } from './modules/voluntario/voluntario.module';
-import { DoacaoModule } from './modules/doacao/doacao.module';
-import { DoadorModule } from './modules/doador/doador.module';
+import { EstoqueModule } from './modules/estoque/estoque.module';
+import { Estoque } from './modules/estoque/entity/estoque.entity';
 
 @Module({
   imports: [
@@ -24,6 +29,8 @@ import { DoadorModule } from './modules/doador/doador.module';
     AuthModule,
     DoacaoModule,
     DoadorModule,
+    EstoqueModule,
+    DistribuicaoModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -31,7 +38,15 @@ import { DoadorModule } from './modules/doador/doador.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_SECRET,
       database: process.env.DB_NAME,
-      entities: [Voluntario, Doacao, ItemDoacao, Doador],
+      entities: [
+        Voluntario,
+        Doacao,
+        ItemDoacao,
+        Doador,
+        Distribuicao,
+        ItemDistribuicao,
+        Estoque,
+      ],
       synchronize: process.env.ENV === 'development',
     }),
     ThrottlerModule.forRoot({

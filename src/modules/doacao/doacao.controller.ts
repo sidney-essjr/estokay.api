@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Funcoes } from 'src/common/decorators/funcao.decator';
 import { FuncaoEnum } from 'src/common/enums/funcao.enum';
 import { AuthGuard } from 'src/common/guards/auth.guard';
@@ -15,5 +15,11 @@ export class DoacaoController {
   @Post()
   async criar(@Body() data: CriarDoacaoDTO) {
     return this.doacaoService.criar(data);
+  }
+
+  @Funcoes(FuncaoEnum.USUARIO, FuncaoEnum.ADMIN)
+  @Get('/buscar-item-por-categoria/:categoria')
+  buscarPorTipo(@Param('categoria') categoria: string) {
+    return this.doacaoService.buscarItensPorCategoria(categoria);
   }
 }

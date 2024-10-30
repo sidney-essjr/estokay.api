@@ -1,13 +1,7 @@
 import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsDate,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-} from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CriarDoacaoItemDTO {
+export class AdicionarDTO {
   @IsString()
   @IsNotEmpty()
   descricao: string;
@@ -30,18 +24,4 @@ export class CriarDoacaoItemDTO {
   @Type(() => Date)
   @IsDate()
   validade: Date;
-}
-
-export class CriarDoacaoDTO {
-  @IsNotEmpty()
-  doador: number;
-
-  @Type(() => Date)
-  @IsDate()
-  @IsNotEmpty()
-  dataEntrada: Date;
-
-  @IsArray()
-  @IsNotEmpty()
-  itens: CriarDoacaoItemDTO[];
 }

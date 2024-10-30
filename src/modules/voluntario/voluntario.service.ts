@@ -1,14 +1,14 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { Repository } from 'typeorm';
-import { CriarVoluntarioDTO } from './dto/criar-voluntario.dto';
-import { Voluntario } from './entity/voluntario.entity';
 import { plainToInstance } from 'class-transformer';
-import { LerVoluntarioDTO } from './dto/ler-voluntario.dto';
-import { AtualizarVoluntarioDTO } from './dto/atualizar-voluntario.dto';
-import { AtualizarVoluntarioAdmDTO } from './dto/atualizar-voluntario.adm.dto';
+import { Repository } from 'typeorm';
 import { AtualizarSenhaDTO } from './dto/atualizar-senha.dto';
+import { AtualizarVoluntarioAdmDTO } from './dto/atualizar-voluntario.adm.dto';
+import { AtualizarVoluntarioDTO } from './dto/atualizar-voluntario.dto';
+import { CriarVoluntarioDTO } from './dto/criar-voluntario.dto';
+import { LerVoluntarioDTO } from './dto/ler-voluntario.dto';
+import { Voluntario } from './entity/voluntario.entity';
 
 @Injectable()
 export class VoluntarioService {
@@ -32,6 +32,14 @@ export class VoluntarioService {
 
   async ler(id: number) {
     const voluntario = await this.voluntarioRepository.findOneBy({ id });
+
+    return plainToInstance(LerVoluntarioDTO, voluntario, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  async lerPorEmail(email: string) {
+    const voluntario = await this.voluntarioRepository.findOneBy({ email });
 
     return plainToInstance(LerVoluntarioDTO, voluntario, {
       excludeExtraneousValues: true,

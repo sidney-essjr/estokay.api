@@ -1,15 +1,15 @@
+import { ItemDistribuicao } from 'src/modules/distribuicao/entity/item-distribuicao.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Doacao } from './doacao.entity';
 
-@Entity({ name: 'ItensDoacao' })
-export class ItemDoacao {
+@Entity({ name: 'Estoque' })
+export class Estoque {
   @PrimaryGeneratedColumn({ unsigned: true })
   id: number;
 
@@ -31,10 +31,11 @@ export class ItemDoacao {
   @Column({ nullable: true, type: 'date' })
   validade: Date;
 
-  @ManyToOne(() => Doacao, (doacao) => doacao.itens, {
-    onDelete: 'CASCADE', // remove os itens ao deletar a doação
-  })
-  doacao: Doacao;
+  @OneToMany(
+    () => ItemDistribuicao,
+    (itensDistribuicao) => itensDistribuicao.itemEstoque,
+  )
+  itensDistribuicao: ItemDistribuicao[];
 
   @CreateDateColumn()
   criado: string;

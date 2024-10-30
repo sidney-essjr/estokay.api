@@ -1,7 +1,6 @@
 import {
   IsEmail,
   IsNotEmpty,
-  IsPhoneNumber,
   IsString,
   IsStrongPassword,
   MinLength,
@@ -27,7 +26,7 @@ export class CriarVoluntarioDTO {
   })
   senha: string;
 
-  @IsPhoneNumber('BR')
+  @IsString()
   telefone: string;
 
   @IsCPF()

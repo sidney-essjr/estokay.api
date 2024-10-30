@@ -1,10 +1,12 @@
 import { Doador } from 'src/modules/doador/entity/doador.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ItemDoacao } from './item-doacao.entity';
 
@@ -23,4 +25,10 @@ export class Doacao {
     cascade: true, // permite inserir itens automaticamente ao salvar a doação
   })
   itens: ItemDoacao[];
+
+  @CreateDateColumn()
+  criado: string;
+
+  @UpdateDateColumn()
+  modificado: string;
 }

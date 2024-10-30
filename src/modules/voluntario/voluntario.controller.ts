@@ -1,20 +1,30 @@
-import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
+import { Funcoes } from 'src/common/decorators/funcao.decator';
 import { ParamId } from 'src/common/decorators/param-id.decorators';
+import { FuncaoEnum } from 'src/common/enums/funcao.enum';
+import { QueryFailedExceptionFilter } from 'src/common/filters/query-failed-exception.filter';
+import { AuthGuard } from 'src/common/guards/auth.guard';
+import { FuncaoGuard } from 'src/common/guards/funcao.guard';
 import { AtualizarSenhaDTO } from './dto/atualizar-senha.dto';
 import { AtualizarVoluntarioAdmDTO } from './dto/atualizar-voluntario.adm.dto';
 import { AtualizarVoluntarioDTO } from './dto/atualizar-voluntario.dto';
 import { CriarVoluntarioDTO } from './dto/criar-voluntario.dto';
 import { VoluntarioService } from './voluntario.service';
-import { FuncaoGuard } from 'src/common/guards/funcao.guard';
-import { Funcoes } from 'src/common/decorators/funcao.decator';
-import { FuncaoEnum } from 'src/common/enums/funcao.enum';
-import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @UseGuards(AuthGuard, FuncaoGuard)
 @Controller('voluntarios')
 export class VoluntarioController {
   constructor(private readonly voluntarioService: VoluntarioService) {}
 
+  @UseFilters(QueryFailedExceptionFilter)
   @Funcoes(FuncaoEnum.ADMIN)
   @Post()
   async criar(@Body() data: CriarVoluntarioDTO) {
@@ -25,6 +35,12 @@ export class VoluntarioController {
   @Get(':id')
   async ler(@ParamId() id: number) {
     return this.voluntarioService.ler(id);
+  }
+
+  @Funcoes(FuncaoEnum.USUARIO, FuncaoEnum.ADMIN)
+  @Get('buscar/:email')
+  async lerPorEmail(@ParamId('email') email: string) {
+    return this.voluntarioService.lerPorEmail(email);
   }
 
   @Funcoes(FuncaoEnum.USUARIO, FuncaoEnum.ADMIN)

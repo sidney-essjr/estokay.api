@@ -7,8 +7,8 @@ import {
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
-import { Funcoes } from 'src/common/decorators/funcao.decator';
-import { ParamId } from 'src/common/decorators/param-id.decorators';
+import { Funcoes } from 'src/common/decorators/funcao.decorator';
+import { ParamId } from 'src/common/decorators/param-id.decorator';
 import { FuncaoEnum } from 'src/common/enums/funcao.enum';
 import { QueryFailedExceptionFilter } from 'src/common/filters/query-failed-exception.filter';
 import { AuthGuard } from 'src/common/guards/auth.guard';

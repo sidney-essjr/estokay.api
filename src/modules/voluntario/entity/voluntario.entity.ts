@@ -1,8 +1,11 @@
+import { Distribuicao } from 'src/modules/distribuicao/entity/distribuicao.entity';
+import { Doacao } from 'src/modules/doacao/entity/doacao.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -39,4 +42,10 @@ export class Voluntario {
 
   @UpdateDateColumn()
   modificado: string;
+
+  @OneToMany(() => Distribuicao, (distribuicoes) => distribuicoes.voluntario)
+  distribuicoes: Distribuicao;
+
+  @OneToMany(() => Doacao, (doacoes) => doacoes.voluntario)
+  doacoes: Doacao;
 }

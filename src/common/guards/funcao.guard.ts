@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { FuncaoEnum } from '../enums/funcao.enum';
-import { KEY_FUNCAO } from '../decorators/funcao.decator';
+import { KEY_FUNCAO } from '../decorators/funcao.decorator';
 import { Voluntario } from 'src/modules/voluntario/entity/voluntario.entity';
 
 @Injectable()

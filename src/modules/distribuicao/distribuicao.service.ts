@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EstoqueService } from '../estoque/estoque.service';
+import { LerVoluntarioDTO } from '../voluntario/dto/ler-voluntario.dto';
 import { CriarDistribuicaoDTO } from './dto/criar-distribuicao.dto';
 import { Distribuicao } from './entity/distribuicao.entity';
 import { ItemDistribuicao } from './entity/item-distribuicao.entity';
@@ -16,12 +17,13 @@ export class DistribuicaoService {
     private readonly estoqueService: EstoqueService,
   ) {}
 
-  async criar(data: CriarDistribuicaoDTO) {
+  async criar(data: CriarDistribuicaoDTO, voluntario: LerVoluntarioDTO) {
     try {
       // Criação e salvamento da distribuição
       const novaDistribuicao = this.distribuicaoRepository.create({
         nomeBeneficiario: data.nome,
         documento: data.documento,
+        voluntario,
       });
       const distribuicao =
         await this.distribuicaoRepository.save(novaDistribuicao);

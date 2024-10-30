@@ -1,4 +1,5 @@
 import { Doador } from 'src/modules/doador/entity/doador.entity';
+import { Voluntario } from 'src/modules/voluntario/entity/voluntario.entity';
 import {
   Column,
   CreateDateColumn,
@@ -25,6 +26,9 @@ export class Doacao {
     cascade: true, // permite inserir itens automaticamente ao salvar a doação
   })
   itens: ItemDoacao[];
+
+  @ManyToOne(() => Voluntario, (voluntario) => voluntario.doacoes)
+  voluntario: Voluntario;
 
   @CreateDateColumn()
   criado: string;

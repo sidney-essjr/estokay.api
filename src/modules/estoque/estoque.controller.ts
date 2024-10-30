@@ -1,5 +1,5 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { Funcoes } from 'src/common/decorators/funcao.decator';
+import { Funcoes } from 'src/common/decorators/funcao.decorator';
 import { FuncaoEnum } from 'src/common/enums/funcao.enum';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { FuncaoGuard } from 'src/common/guards/funcao.guard';

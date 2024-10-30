@@ -5,6 +5,7 @@ import { EstoqueService } from '../estoque/estoque.service';
 import { CriarDoacaoDTO } from './dto/criar-doacao.dto';
 import { Doacao } from './entity/doacao.entity';
 import { ItemDoacao } from './entity/item-doacao.entity';
+import { LerVoluntarioDTO } from '../voluntario/dto/ler-voluntario.dto';
 
 @Injectable()
 export class DoacaoService {
@@ -16,10 +17,11 @@ export class DoacaoService {
     private readonly estoqueService: EstoqueService,
   ) {}
 
-  async criar(data: CriarDoacaoDTO) {
+  async criar(data: CriarDoacaoDTO, voluntario: LerVoluntarioDTO) {
     const doacaoData: DeepPartial<Doacao> = {
       ...data,
       doador: { id: data.doador },
+      voluntario,
     };
 
     data.itens.map((item) => {

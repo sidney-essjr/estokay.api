@@ -60,7 +60,11 @@ export class EstoqueService {
     return this.estoqueRepository.findOneBy({ id });
   }
 
-  async atualizarItemDoacao(id: number, quantidade: number) {
+  async atualizarQuantidadeItemDoacao(id: number, quantidade: number) {
     this.estoqueRepository.update(id, { quantidade });
+  }
+
+  async atualizarItemDoacao(id: number, item: AdicionarDTO) {
+    this.estoqueRepository.update(id, item);
   }
 }

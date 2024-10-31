@@ -53,7 +53,7 @@ export class DistribuicaoService {
           item.itemDoacao,
         );
 
-        await this.estoqueService.atualizarItemDoacao(
+        await this.estoqueService.atualizarQuantidadeItemDoacao(
           item.itemDoacao,
           itemEstoque.quantidade - item.quantidade,
         );

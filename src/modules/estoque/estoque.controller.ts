@@ -1,8 +1,17 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { Funcoes } from 'src/common/decorators/funcao.decorator';
 import { FuncaoEnum } from 'src/common/enums/funcao.enum';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { FuncaoGuard } from 'src/common/guards/funcao.guard';
+import { AdicionarDTO } from './dto/adicionar.dto';
 import { EstoqueService } from './estoque.service';
 
 @UseGuards(AuthGuard, FuncaoGuard)
@@ -25,5 +34,11 @@ export class EstoqueController {
       validadeAte: validadeAte ? new Date(validadeAte) : undefined,
     };
     return this.estoqueService.buscarItens(filtros);
+  }
+
+  @Funcoes(FuncaoEnum.ADMIN)
+  @Post('/atualizar/:id')
+  atualizar(@Body() item: AdicionarDTO, @Param() id: number) {
+    this.estoqueService.atualizarItemDoacao(id, item);
   }
 }

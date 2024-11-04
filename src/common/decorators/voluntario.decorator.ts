@@ -12,7 +12,7 @@ export const Voluntario = createParamDecorator(
       if (filter) {
         return request.voluntario[filter];
       } else {
-        return request.user;
+        return request.voluntario;
       }
     } else {
       throw new NotFoundException(

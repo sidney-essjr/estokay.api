@@ -66,4 +66,48 @@ export class DistribuicaoService {
       }),
     );
   }
+
+  async buscarDistribuicao(filtros: {
+    dataInicio?: Date;
+    dataFim?: Date;
+    voluntario?: number;
+  }) {
+    const queryBuilder = this.distribuicaoRepository
+      .createQueryBuilder('distribuicao')
+      .leftJoinAndSelect('distribuicao.voluntario', 'voluntario')
+      .leftJoinAndSelect('distribuicao.itensDistribuicao', 'itensDistribuicao')
+      .leftJoinAndSelect('itensDistribuicao.itemEstoque', 'itemEstoque')
+      .select([
+        'distribuicao.criado',
+        'distribuicao.documento',
+        'distribuicao.nomeBeneficiario',
+        'itemEstoque.categoria',
+        'itemEstoque.descricao',
+        'itemEstoque.medida',
+        'itemEstoque.tamanho',
+        'itensDistribuicao.quantidade',
+        'voluntario.nome',
+      ]);
+
+    if (filtros.dataInicio) {
+      queryBuilder.andWhere('distribuicao.criado >= :dataInicio', {
+        dataInicio: filtros.dataInicio,
+      });
+    }
+
+    if (filtros.dataFim) {
+      queryBuilder.andWhere('distribuicao.criado <= :dataFim', {
+        dataFim: filtros.dataFim,
+      });
+    }
+
+    if (filtros.voluntario) {
+      queryBuilder.andWhere('voluntario.id = :voluntario', {
+        voluntario: filtros.voluntario,
+      });
+    }
+    const result = await queryBuilder.getMany();
+
+    return result;
+  }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { Funcoes } from 'src/common/decorators/funcao.decorator';
 import { Voluntario } from 'src/common/decorators/voluntario.decorator';
 import { FuncaoEnum } from 'src/common/enums/funcao.enum';
@@ -26,5 +34,20 @@ export class DoacaoController {
   @Get('/buscar-item-por-categoria/:categoria')
   buscarPorTipo(@Param('categoria') categoria: string) {
     return this.doacaoService.buscarItensPorCategoria(categoria);
+  }
+
+  @Funcoes(FuncaoEnum.ADMIN)
+  @Get('/buscar')
+  buscarDoacao(
+    @Query('dataInicio') dataInicio: string,
+    @Query('dataFim') dataFim: string,
+    @Query('voluntario') voluntario: string,
+  ) {
+    const filtros = {
+      dataInicio: dataInicio ? new Date(dataInicio) : undefined,
+      dataFim: dataFim ? new Date(dataFim) : undefined,
+      voluntario: !isNaN(Number(voluntario)) ? Number(voluntario) : undefined,
+    };
+    return this.doacaoService.buscarDoacao(filtros);
   }
 }

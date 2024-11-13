@@ -142,7 +142,7 @@ export class AuthService {
 
   criarCookie(res: Response, token: string) {
     res.cookie('accessToken', token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 24,

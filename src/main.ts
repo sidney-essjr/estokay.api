@@ -12,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { httpsOptions });
 
   app.enableCors({
-    origin: ['https://localhost:5173'],
+    origin: ['https://localhost:5173', 'https://estokay-front.vercel.app/'],
     credentials: true,
   });
 

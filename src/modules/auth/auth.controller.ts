@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { AuthService } from './auth.service';
@@ -23,9 +15,8 @@ export class AuthController {
   }
 
   @Post('esqueceu-senha')
-  esqueceuSenha(@Body() { email }: EsqueceuSenhaDTO, @Res() res: Response) {
-    this.authService.esqueceuSenha(email);
-    return res.status(HttpStatus.OK).json();
+  esqueceuSenha(@Body() { email }: EsqueceuSenhaDTO) {
+    return this.authService.esqueceuSenha(email);
   }
 
   @Post('redefinir-senha')

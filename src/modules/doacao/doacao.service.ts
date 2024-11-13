@@ -58,11 +58,13 @@ export class DoacaoService {
       .leftJoinAndSelect('doacao.itens', 'item')
       .leftJoinAndSelect('doacao.voluntario', 'voluntario')
       .select([
+        'doacao.id',
         'doacao.dataEntrada',
         'doador.nome',
         'doador.cidade',
         'doador.estado',
         'item.quantidade',
+        'item.categoria',
         'item.descricao',
         'item.medida',
         'item.tamanho',

@@ -146,8 +146,8 @@ export class AuthService {
       secure: true,
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: 'none',
-      domain: 'estokay-front-1.onrender.com',
-      path: '/access/login',
+      domain: 'onrender.com',
+      path: '/',
     });
   }
 }

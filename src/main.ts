@@ -1,15 +1,14 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { readFileSync } from 'fs';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: readFileSync('certificates/key.pem'),
-    cert: readFileSync('certificates/cert.pem'),
-  };
+  // const httpsOptions = {
+  //   key: readFileSync('certificates/key.pem'),
+  //   cert: readFileSync('certificates/cert.pem'),
+  // };
 
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule);
 
   app.enableCors({
     origin: ['https://localhost:5173', 'https://estokay-front.vercel.app'],

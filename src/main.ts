@@ -4,17 +4,15 @@ import { AppModule } from './app.module';
 import { readFileSync } from 'fs';
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: readFileSync('certificates/key.pem'),
-    cert: readFileSync('certificates/cert.pem'),
-  };
+  // const httpsOptions = {
+  //   key: readFileSync('certificates/key.pem'),
+  //   cert: readFileSync('certificates/cert.pem'),
+  // };
 
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: (origin, callback) => {
-      callback(null, true); // Permite qualquer origem
-    },
+    origin: ['https://estokay.onrender.com', 'https://localhost:5173/'],
     credentials: true,
   });
 

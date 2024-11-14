@@ -143,10 +143,11 @@ export class AuthService {
   criarCookie(res: Response, token: string) {
     res.cookie('accessToken', token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: 'none',
       domain: 'estokay-front-1.onrender.com',
+      path: '/access/login',
     });
   }
 }

@@ -141,12 +141,11 @@ export class AuthService {
   }
 
   criarCookie(res: Response, token: string) {
-    const isProduction = process.env.NODE_ENV === 'production';
     res.cookie('accessToken', token, {
-      httpOnly: true,
-      secure: isProduction,
+      httpOnly: false,
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24,
-      sameSite: isProduction ? 'none' : 'lax',
+      sameSite: 'lax',
     });
   }
 }

@@ -12,7 +12,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['https://estokay.onrender.com', 'https://localhost:5173/'],
+    origin: [
+      'https://estokay.onrender.com',
+      'https://localhost:5173/',
+      'https://estokay-front.vercel.app',
+    ],
     credentials: true,
   });
 

@@ -12,7 +12,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { httpsOptions });
 
   app.enableCors({
-    origin: 'https://estokay.onrender.com',
+    origin: (origin, callback) => {
+      callback(null, true); // Permite qualquer origem
+    },
     credentials: true,
   });
 

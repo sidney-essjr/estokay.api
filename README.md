@@ -39,8 +39,7 @@
 - **Hospedagem e Gerenciamento:** [Supabase](https://supabase.com/)
 - **Database Schema**
     
-    ![image.png](image.png)
-    
+    ![image](https://github.com/user-attachments/assets/dee4dc71-58a8-4a5d-9f7a-419db5279452)
 
 ### Run project
 

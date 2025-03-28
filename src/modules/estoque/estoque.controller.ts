@@ -13,12 +13,17 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { FuncaoGuard } from 'src/common/guards/funcao.guard';
 import { AdicionarDTO } from './dto/adicionar.dto';
 import { EstoqueService } from './estoque.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('estoque')
 @UseGuards(AuthGuard, FuncaoGuard)
 @Controller('/estoque')
 export class EstoqueController {
   constructor(private readonly estoqueService: EstoqueService) {}
 
+  @ApiOperation({ summary: 'Adicionar item ao estoque' })
+  @ApiResponse({ status: 201, description: 'Item adicionado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Erro na validação dos dados' })
   @Funcoes(FuncaoEnum.USUARIO, FuncaoEnum.ADMIN)
   @Get('/buscar')
   buscarItens(
@@ -36,6 +41,9 @@ export class EstoqueController {
     return this.estoqueService.buscarItens(filtros);
   }
 
+  @ApiOperation({ summary: 'Adicionar item ao estoque' })
+  @ApiResponse({ status: 201, description: 'Item adicionado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Erro na validação dos dados' })
   @Funcoes(FuncaoEnum.ADMIN)
   @Post('/atualizar/:id')
   atualizar(@Body() item: AdicionarDTO, @Param() id: number) {

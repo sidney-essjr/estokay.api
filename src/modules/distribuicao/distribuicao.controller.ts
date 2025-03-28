@@ -7,12 +7,16 @@ import { FuncaoGuard } from 'src/common/guards/funcao.guard';
 import { LerVoluntarioDTO } from '../voluntario/dto/ler-voluntario.dto';
 import { DistribuicaoService } from './distribuicao.service';
 import { CriarDistribuicaoDTO } from './dto/criar-distribuicao.dto';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('distribuicao')
 @UseGuards(AuthGuard, FuncaoGuard)
 @Controller('distribuicoes')
 export class DistribuicaoController {
   constructor(private readonly distribuicaoService: DistribuicaoService) {}
 
+  @ApiOperation({ summary: 'Criar distribuição' })
+  @ApiResponse({ status: 201, description: 'Distribuição criada com sucesso' })
   @Funcoes(FuncaoEnum.USUARIO, FuncaoEnum.ADMIN)
   @Post()
   criar(
@@ -22,6 +26,8 @@ export class DistribuicaoController {
     return this.distribuicaoService.criar(data, voluntario);
   }
 
+  @ApiOperation({ summary: 'Buscar distribuição' })
+  @ApiResponse({ status: 200, description: 'Distribuições encontradas' })
   @Funcoes(FuncaoEnum.ADMIN)
   @Get('/buscar')
   buscarDistribuicao(

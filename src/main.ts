@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { readFileSync } from 'fs';
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const httpsOptions = {
@@ -10,6 +11,16 @@ async function bootstrap() {
   };
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
+
+  const config = new DocumentBuilder()
+  .setTitle('EstoKay API')
+  .setDescription('API para controle de estoque de doações')
+  .setVersion('1.0')
+  .addBearerAuth()
+  .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.enableCors({
     origin: [

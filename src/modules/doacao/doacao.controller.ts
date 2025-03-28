@@ -15,12 +15,17 @@ import { FuncaoGuard } from 'src/common/guards/funcao.guard';
 import { LerVoluntarioDTO } from '../voluntario/dto/ler-voluntario.dto';
 import { DoacaoService } from './doacao.service';
 import { CriarDoacaoDTO } from './dto/criar-doacao.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('doacoes')
 @UseGuards(AuthGuard, FuncaoGuard)
 @Controller('/doacoes')
 export class DoacaoController {
   constructor(private readonly doacaoService: DoacaoService) {}
 
+
+  @ApiOperation({ summary: 'Criar doação' })
+  @ApiResponse({ status: 201, description: 'Doação criada com sucesso' })
   @Funcoes(FuncaoEnum.USUARIO, FuncaoEnum.ADMIN)
   @Post()
   async criar(
@@ -30,12 +35,18 @@ export class DoacaoController {
     return this.doacaoService.criar(data, voluntario);
   }
 
+  @ApiOperation({ summary: 'Buscar itens por categoria' })
+  @ApiResponse({ status: 200, description: 'Itens encontrados' })
+  @ApiResponse({ status: 404, description: 'Itens não encontrados' })
   @Funcoes(FuncaoEnum.USUARIO, FuncaoEnum.ADMIN)
   @Get('/buscar-item-por-categoria/:categoria')
   buscarPorTipo(@Param('categoria') categoria: string) {
     return this.doacaoService.buscarItensPorCategoria(categoria);
   }
 
+  @ApiOperation({ summary: 'Buscar itens por validade' })
+  @ApiResponse({ status: 200, description: 'Itens encontrados' })
+  @ApiResponse({ status: 404, description: 'Itens não encontrados' })
   @Funcoes(FuncaoEnum.ADMIN)
   @Get('/buscar')
   buscarDoacao(

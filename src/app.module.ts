@@ -33,11 +33,11 @@ import { Estoque } from './modules/estoque/entity/estoque.entity';
     DistribuicaoModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_SECRET,
-      database: process.env.DB_NAME,
+      url: process.env.DATABASE_URL,
+      autoLoadEntities: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
       entities: [
         Voluntario,
         Doacao,

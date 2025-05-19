@@ -58,7 +58,7 @@ export class AuthService {
   async login(email: string, senha: string, res: Response) {
     const voluntario = await this.voluntarioRepository.findOneBy({ email });
 
-    if (!voluntario || !voluntario.ativo)
+    if (!voluntario?.ativo)
       throw new UnauthorizedException('Dados de acesso inválidos.');
 
     const permitido = await bcrypt.compare(senha, voluntario.senha);
@@ -123,7 +123,7 @@ export class AuthService {
   }
 
   async sessionLogin(req: any) {
-    const id = Number(req.voluntario.id) ?? 0;
+    const id = Number(req.voluntario.id);
 
     try {
       const voluntario = await this.voluntarioRepository.findOneByOrFail({

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -45,7 +46,7 @@ export class EstoqueController {
   @ApiResponse({ status: 201, description: 'Item adicionado com sucesso' })
   @ApiResponse({ status: 400, description: 'Erro na validação dos dados' })
   @Funcoes(FuncaoEnum.ADMIN)
-  @Post('/atualizar/:id')
+  @Patch('/atualizar/:id')
   atualizar(@Body() item: AdicionarDTO, @Param() id: number) {
     this.estoqueService.atualizarItemDoacao(id, item);
   }

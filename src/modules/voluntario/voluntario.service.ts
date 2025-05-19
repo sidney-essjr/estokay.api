@@ -18,8 +18,14 @@ export class VoluntarioService {
   ) {}
 
   async criar(data: CriarVoluntarioDTO) {
-    const hash = await bcrypt.hash(data.senha, bcrypt.genSaltSync());
-    data.senha = hash;
+    const senhaHash = await bcrypt.hash(data.senha, bcrypt.genSaltSync());
+    data.senha = senhaHash;
+
+    const documentoHash = await bcrypt.hash(
+      data.documento,
+      bcrypt.genSaltSync(),
+    );
+    data.documento = documentoHash;
 
     const novoVoluntario = this.voluntarioRepository.create(data);
 

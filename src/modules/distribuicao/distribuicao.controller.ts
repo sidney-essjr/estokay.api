@@ -32,7 +32,7 @@ export class DistribuicaoController {
     const filtros = {
       dataInicio: dataInicio ? new Date(dataInicio) : undefined,
       dataFim: dataFim ? new Date(dataFim) : undefined,
-      voluntario: !isNaN(Number(voluntario)) ? Number(voluntario) : undefined,
+      voluntario: !Number.isNaN(Number(voluntario)) ? Number(voluntario) : undefined,
     };
 
     return this.distribuicaoService.buscarDistribuicao(filtros);

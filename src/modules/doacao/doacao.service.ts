@@ -24,7 +24,7 @@ export class DoacaoService {
       voluntario,
     };
 
-    data.itens.map((item) => {
+    data.itens.forEach((item) => {
       this.estoqueService.adicionarItem({
         categoria: item.categoria,
         descricao: item.descricao,

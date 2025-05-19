@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -37,7 +38,7 @@ export class EstoqueController {
   }
 
   @Funcoes(FuncaoEnum.ADMIN)
-  @Post('/atualizar/:id')
+  @Patch('/atualizar/:id')
   atualizar(@Body() item: AdicionarDTO, @Param() id: number) {
     this.estoqueService.atualizarItemDoacao(id, item);
   }
